@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "80:80"  # Expose port 80 for WordPress
+    environment:
+      WORDPRESS_DB_HOST: db  # Hostname of the database service
+      WORDPRESS_DB_USER: wp_user  # Username for the database
+      WORDPRESS_DB_PASSWORD: wp_password  # Password for the database user
+      WORDPRESS_DB_NAME: wp_database  # Name of the database
+    networks:
+      - wordpress_network
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password  # Root password for MySQL
+      MYSQL_DATABASE: wp_database  # Database name to create
+      MYSQL_USER: wp_user  # Username for the WordPress database
+      MYSQL_PASSWORD: wp_password  # Password for the WordPress database user
+    networks:
+      - wordpress_network
+
+networks:
+  wordpress_network:
+    driver: bridge
